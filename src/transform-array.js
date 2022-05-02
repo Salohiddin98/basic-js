@@ -23,13 +23,19 @@ function transform(arr) {
           i++;
           break;
         case "--discard-prev":
-          result.pop();
+          if (i != 0 && arr[i - 2] != "--discard-next") {
+            result.pop();
+          }
           break;
         case "--double-next":
-          result.push(arr[i + 1]);
+          if (i != arr.length - 1) {
+            result.push(arr[i + 1]);
+          }
           break;
         case "--double-prev":
-          result.push(arr[i - 1]);
+          if (i != 0 && arr[i - 2] != "--discard-next") {
+            result.push(arr[i - 1]);
+          }
           break;
         default:
           result.push(arr[i]);
