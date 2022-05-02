@@ -18,31 +18,34 @@ const { NotImplementedError } = require("../extensions/index.js");
 function repeater(str, options) {
   let repeatTimes = options.hasOwnProperty("repeatTimes")
     ? options.repeatTimes
-    : 0;
+    : 1;
   let separator = options.hasOwnProperty("separator") ? options.separator : "+";
-  let addition = options.hasOwnProperty("addition") ? options.addition : "";
+  let addition = options.hasOwnProperty("addition")
+    ? "" + options.addition
+    : "";
   let additionRepeatTimes = options.hasOwnProperty("additionRepeatTimes")
     ? options.additionRepeatTimes
-    : 0;
-  let additionSeparator = options.hasOwnProperty("additionSeparator")
-    ? options.additionSeparator
-    : "|";
-  let result = [];
-  let temp = getStr(addition, {
+    : 1;
+  let additionSeparator =
+    options.hasOwnProperty("additionSeparator") && addition != ""
+      ? options.additionSeparator
+      : "|";
+  function getResult(s, obj) {
+    let temp = [];
+    for (let i = 0; i < obj.repeatTimes; i++) {
+      temp.push(s);
+    }
+    return temp.join(obj.separator);
+  }
+  const atemp = getResult(addition, {
     repeatTimes: additionRepeatTimes,
     separator: additionSeparator,
   });
-  function getStr(s, obj) {
-    for (let i = 0; i < obj.repeatTimes; i++) {
-      result.push(str);
-    }
-    return result.join(obj.separator);
-  }
-  return getStr(addition, {
+  str = str + atemp;
+  return getResult(str, {
     repeatTimes: repeatTimes,
-    separator: temp,
+    separator: separator,
   });
-  //
 }
 
 module.exports = {
